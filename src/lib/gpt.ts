@@ -1,4 +1,5 @@
-import { Configuration, OpenAIApi } from "openai";
+import Configuration from "openai";
+import OpenAIApi from "openai";
  
 const configuration = new Configuration({
   apiKey: process.env.OPENAI_API_KEY,
@@ -66,6 +67,8 @@ export async function strict_output(
         { role: "user", content: user_prompt.toString() },
       ],
     });
+    console.log("Printing the response from OpenAI API")
+    console.log(response)
  
     let res: string =
       response.data.choices[0].message?.content?.replace(/'/g, '"') ?? "";

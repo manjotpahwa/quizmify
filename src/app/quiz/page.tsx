@@ -9,7 +9,7 @@ export const metadata = {
   title: "Quiz | Quizmify",
 };
 
-const QUiz = async (props: Props) => {
+const Quiz = async (props: Props) => {
   const session = await getAuthSession();
   if (!session?.user) {
     return redirect("/");
@@ -17,4 +17,4 @@ const QUiz = async (props: Props) => {
   return <QuizCreation />;
 };
 
-export default QUiz;
+export default Quiz;
