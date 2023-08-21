@@ -1,17 +1,13 @@
+"use client";
 import { useTheme } from "next-themes";
 import React from "react";
 import D3WordCloud from "react-d3-cloud";
 
-type Props = {};
-const words = [
-  { text: "Hey", value: 1000 },
-  { text: "lol", value: 200 },
-  { text: "first impression", value: 800 },
-  { text: "very cool", value: 1000000 },
-  { text: "duck", value: 10 },
-];
+type Props = {
+  formattedTopics: { text: string; value: number }[];
+};
 
-const CustomWordCloud = (props: Props) => {
+const CustomWordCloud = ({ formattedTopics }: Props) => {
   const theme = useTheme();
   return (
     <D3WordCloud
@@ -22,7 +18,7 @@ const CustomWordCloud = (props: Props) => {
       padding={10}
       spiral={"rectangular"}
       fill={theme.theme == "dark" ? "white" : "black"}
-      data={words}
+      data={formattedTopics}
     ></D3WordCloud>
   );
 };

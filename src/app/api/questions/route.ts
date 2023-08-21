@@ -26,33 +26,43 @@ export const POST = async (req: Request, resp: Response) => {
         //     );
         // }
         const body = await req.json();
+        console.log("printing the request body in /api/questions")
+        console.log(body)
         const {amount, topic, type} = quizCreationSchema.parse(body);
+        // console.log("printing amount topic type in /api/questions")
+        // console.log(amount)
+        // console.log(topic)
+        // console.log(type)
         let questions: any;
 
         if (type === 'open_ended') {
             questions = await strict_output(
-                'You are a heplful AI that would help generate questions and answers, the length of answers should not exceed 15 words. Store all pairs of questions and answers in a json array. ',
+                'You are a heplful AI that would help generate questions and answers, the length of answers should not exceed 1 word. Store all pairs of questions and answers in a json array. ',
                 new Array(amount).fill(
                     `You are to generate a random hard open ended question about ${topic}`),
                 {
                     question: "question",
-                    answer: "answer with max length 15 words"
+                    answer: "answer with max length 1 word"
                 }
             )
+            console.log("printing the strict output output for open ended")
+            console.log(questions)
         } else if (type === 'mcq') {
             questions = await strict_output(
-            'You are a helpful AI that is able to generate mcq questions and answers, the length of each answer should not exceed 15 words. Store all questions and answers and options in a JSON array.',
+            'You are a helpful AI that is able to generate mcq questions and answers, the length of each answer should not exceed 1 word. Store all questions and answers and options in a JSON array.',
             new Array(amount).fill(
                 `You are to generate a random mcq question about ${topic}`
             ),
             {
                 question: 'question',
-                answer: 'answer with max length of 15 words',
-                option1: '1st option with max length of 15 words',
-                option2: '2nd option with max length of 15 words',
-                option3: '3rd option with max length of 15 words',
+                answer: 'answer with max length of 1 word',
+                option1: '1st option with max length of 1 word',
+                option2: '2nd option with max length of 1 word',
+                option3: '3rd option with max length of 1 word',
             }  
             )
+            console.log("printing the strict output output for mcq")
+            console.log(questions)
         }
         console.log("printing the questions generated");
         console.log({questions});

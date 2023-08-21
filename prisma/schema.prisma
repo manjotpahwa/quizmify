@@ -45,7 +45,7 @@ model User {
   image         String?
   accounts      Account[]
   sessions      Session[]
-  Game          Game[]
+  games         Game[]
 }
 
 enum GameType {
@@ -61,7 +61,7 @@ model Game {
   timeEnded   DateTime?
   gameType    GameType
   user        User       @relation(fields: [userId], references: [id], onDelete: Cascade)
-  Question    Question[]
+  questions   Question[]
 
   @@index([userId], name: "userId")
 }
@@ -80,4 +80,10 @@ model Question {
   game Game @relation(fields: [gameId], references: [id], onDelete: Cascade)
 
   @@index([gameId], name: "gameId")
+}
+
+model TopicCount {
+  id    String @id @default(cuid())
+  topic String @unique
+  count Int
 }

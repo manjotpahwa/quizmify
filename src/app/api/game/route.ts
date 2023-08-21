@@ -22,6 +22,10 @@ export async function POST(req: Request, res: Response) {
         }
         const body = await req.json();
         const {amount, topic, type} = quizCreationSchema.parse(body)
+        // console.log("printing amount topic type")
+        // console.log(amount)
+        // console.log(topic)
+        // console.log(type)
         const game = await prisma.game.create({
             data: {
                 gameType: type,
@@ -29,9 +33,21 @@ export async function POST(req: Request, res: Response) {
                 userId: session.user.id,
                 topic
             }
-        })
+        });
+        await prisma.topicCount.upsert({
+            where: {topic},
+            create: {
+                topic,
+                count: 1
+            },
+            update: {
+                count: {
+                    increment: 1
+                }
+            }
+        });
         console.log('Making a request to /api/questions');
-        const {data} = await axios.post('${process.env.API_URL}/api/questions', {
+        const {data} = await axios.post(`${process.env.API_URL}/api/questions`, {
             amount, 
             topic,
             type,
@@ -85,6 +101,8 @@ export async function POST(req: Request, res: Response) {
         if (error instanceof ZodError) {
             return NextResponse.json({error: error.issues}, {status: 400});
         }
+        console.log("printing error while post request")
+        console.log(error)
         return NextResponse.json({
             error: "something went wrong"
         },
