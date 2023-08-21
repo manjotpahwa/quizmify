@@ -22,10 +22,7 @@ export async function POST(req: Request, res: Response) {
         }
         const body = await req.json();
         const {amount, topic, type} = quizCreationSchema.parse(body)
-        // console.log("printing amount topic type")
-        // console.log(amount)
-        // console.log(topic)
-        // console.log(type)
+        
         const game = await prisma.game.create({
             data: {
                 gameType: type,

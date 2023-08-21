@@ -37,12 +37,12 @@ export const POST = async (req: Request, resp: Response) => {
 
         if (type === 'open_ended') {
             questions = await strict_output(
-                'You are a heplful AI that would help generate questions and answers, the length of answers should not exceed 1 word. Store all pairs of questions and answers in a json array. ',
+                'You are a heplful AI that would help generate questions and answers, the length of answers should not exceed 15 words. Store all pairs of questions and answers in a json array. ',
                 new Array(amount).fill(
                     `You are to generate a random hard open ended question about ${topic}`),
                 {
                     question: "question",
-                    answer: "answer with max length 1 word"
+                    answer: "answer with max length 15 words"
                 }
             )
             console.log("printing the strict output output for open ended")
