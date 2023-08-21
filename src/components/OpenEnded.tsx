@@ -1,11 +1,11 @@
 "use client";
-import { formatTimeDelta } from "@/lib/utils";
+import { cn, formatTimeDelta } from "@/lib/utils";
 import { Game, Question } from "@prisma/client";
 import { differenceInSeconds } from "date-fns";
-import { Timer, Loader2, ChevronRight } from "lucide-react";
+import { Timer, Loader2, ChevronRight, Link, BarChart } from "lucide-react";
 import { now } from "next-auth/client/_utils";
 import React from "react";
-import { Button } from "./ui/button";
+import { Button, buttonVariants } from "./ui/button";
 import { Card, CardHeader, CardTitle, CardDescription } from "./ui/card";
 import { useToast } from "./ui/use-toast";
 import { checkAnswerSchema } from "@/schemas/form/quiz";
@@ -80,6 +80,24 @@ const OpenEnded = ({ game }: Props) => {
     game.questions.length,
     blankAnswer,
   ]);
+
+  if (hasEnded) {
+    return (
+      <div className="absolute flex flex-col justify-center -translate-x-1/2 -translate-y-1/2 top-1/2 left-1/2">
+        <div className="px-4 py-2 mt-2 font-semibold text-white bg-green-500 rounded-md whitespace-nowrap">
+          You Completed in{" "}
+          {formatTimeDelta(differenceInSeconds(now, game.timeStarted))}
+        </div>
+        <Link
+          href={`/statistics/${game.id}`}
+          className={cn(buttonVariants({ size: "lg" }), "mt-2")}
+        >
+          View Statistics
+          <BarChart className="w-4 h-4 ml-2" />
+        </Link>
+      </div>
+    );
+  }
 
   return (
     <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 md:w-[80vw] max-w-4xl w-[90vw]">
