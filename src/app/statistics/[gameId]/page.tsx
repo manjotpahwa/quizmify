@@ -1,4 +1,7 @@
+import AccuracyCard from "@/components/statistics/AccuracyCard";
+import QuestionList from "@/components/statistics/QuestionList";
 import ResultsCard from "@/components/statistics/ResultsCard";
+import TimeTakenCard from "@/components/statistics/TimeTakenCard";
 import { buttonVariants } from "@/components/ui/button";
 import { prisma } from "@/lib/db";
 import { getAuthSession } from "@/lib/nextauth";
@@ -22,11 +25,31 @@ const StatisticsPage = async ({ params: { gameId } }: Props) => {
     where: {
       id: gameId,
     },
+    include: {
+      questions: true,
+    },
   });
 
   if (!game) {
     return redirect("/");
   }
+
+  let accuracy: number = 0;
+  if (game.gameType === "mcq") {
+    let totalCorrect = game.questions.reduce((acc, question) => {
+      if (question.isCorrect) {
+        return acc + 1;
+      }
+      return acc;
+    }, 0);
+    accuracy = (totalCorrect / game.questions.length) * 100;
+  } else if (game.gameType === "open_ended") {
+    let totalPercentage = game.questions.reduce((acc, question) => {
+      return acc + (question.percentageCorrect || 0);
+    }, 0);
+    accuracy = totalPercentage / game.questions.length;
+  }
+  accuracy = Math.round(accuracy * 100) / 100;
 
   return (
     <div className="padding-8 mx-auto max-w-7xl">
@@ -40,11 +63,11 @@ const StatisticsPage = async ({ params: { gameId } }: Props) => {
         </div>
       </div>
       <div className=" grid gap-4 mt-4 md:grid-cols-7">
-        <ResultsCard accuracy={20} />
-        {/* <AccuracyCard /> */}
-        {/* <TimeTakenCard /> */}
+        <ResultsCard accuracy={accuracy} />
+        <AccuracyCard accuracy={accuracy} />
+        <TimeTakenCard timeEnded={new Date()} timeStarted={game.timeStarted} />
       </div>
-      {/* <QuestionList /> */}
+      <QuestionList questions={game.questions} />
     </div>
   );
 };
