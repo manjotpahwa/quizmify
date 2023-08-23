@@ -1,7 +1,7 @@
 "use client";
 import { differenceInSeconds } from "date-fns";
 import { Game, Question } from "@prisma/client";
-import { BarChart, ChevronRight, Link, Loader2, Timer } from "lucide-react";
+import { BarChart, ChevronRight, Loader2, Timer } from "lucide-react";
 import React from "react";
 import { Card, CardDescription, CardHeader, CardTitle } from "./ui/card";
 import { Button, buttonVariants } from "./ui/button";
@@ -12,6 +12,7 @@ import { z } from "zod";
 import axios from "axios";
 import { useToast } from "./ui/use-toast";
 import { cn, formatTimeDelta } from "@/lib/utils";
+import Link from "next/link";
 
 type Props = {
   game: Game & { questions: Pick<Question, "id" | "question" | "options">[] };

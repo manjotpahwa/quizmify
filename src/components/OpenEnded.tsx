@@ -2,7 +2,7 @@
 import { cn, formatTimeDelta } from "@/lib/utils";
 import { Game, Question } from "@prisma/client";
 import { differenceInSeconds } from "date-fns";
-import { Timer, Loader2, ChevronRight, Link, BarChart } from "lucide-react";
+import { Timer, Loader2, ChevronRight, BarChart } from "lucide-react";
 import { now } from "next-auth/client/_utils";
 import React from "react";
 import { Button, buttonVariants } from "./ui/button";
@@ -13,6 +13,7 @@ import { useMutation } from "@tanstack/react-query";
 import { z } from "zod";
 import axios from "axios";
 import BlankAnswerInput from "./BlankAnswerInput";
+import Link from "next/link";
 
 type Props = {
   game: Game & { questions: Pick<Question, "id" | "question" | "answer">[] };

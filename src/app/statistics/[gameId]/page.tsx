@@ -5,8 +5,9 @@ import TimeTakenCard from "@/components/statistics/TimeTakenCard";
 import { buttonVariants } from "@/components/ui/button";
 import { prisma } from "@/lib/db";
 import { getAuthSession } from "@/lib/nextauth";
-import { Link, LucideLayout, LucideLayoutDashboard } from "lucide-react";
+import { LucideLayout, LucideLayoutDashboard } from "lucide-react";
 import { redirect } from "next/navigation";
+import Link from "next/link";
 import React from "react";
 
 type Props = {
